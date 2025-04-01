@@ -2,6 +2,7 @@ package com.muzan.musicbookingapp.service;
 
 import com.muzan.musicbookingapp.dto.ArtistDto;
 import com.muzan.musicbookingapp.dto.UserDto;
+import com.muzan.musicbookingapp.model.User;
 import com.muzan.musicbookingapp.model.UserRole;
 import com.muzan.musicbookingapp.repository.IArtistRepository;
 import com.muzan.musicbookingapp.repository.IUserRepository;
@@ -51,5 +52,12 @@ public class UserService {
         }
 
         return userDto;
+    }
+
+    public User getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
     }
 }

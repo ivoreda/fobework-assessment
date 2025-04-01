@@ -48,9 +48,10 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/api/v1/artists/**").hasRole(UserRole.ARTIST.name())
-                        .requestMatchers("/api/v1/bookings/**").hasRole(UserRole.MEMBER.name())
+                        .requestMatchers("/api/v1/event/**").authenticated()
+                        .requestMatchers("/api/v1/payments/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

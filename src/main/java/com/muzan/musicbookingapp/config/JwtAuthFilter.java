@@ -32,8 +32,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         System.out.println("Request URI: " + request.getRequestURI());
         System.out.println("Auth header: " + (authHeader != null ? "Present" : "Missing"));
-        // Skip token validation for auth endpoints
-
 
         final String requestURI = request.getRequestURI();
 

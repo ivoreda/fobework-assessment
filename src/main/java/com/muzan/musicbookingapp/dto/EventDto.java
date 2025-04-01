@@ -28,7 +28,7 @@ public class EventDto {
         @NotBlank(message = "Event location is required")
         private String location;
 
-        @NotBlank(message = "Event type is required")
+        @NotNull(message = "Event type is required")
         private EventType type;
 
         @NotNull(message = "Number of available tickets is required")
