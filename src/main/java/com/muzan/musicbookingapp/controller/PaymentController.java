@@ -17,18 +17,16 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping("/events/{eventId}")
-    public Mono<ResponseEntity<PaymentDto.InitiatePaymentResponse>> initiateEventPayment(
+    public ResponseEntity<PaymentDto.InitiatePaymentResponse> initiateEventPayment(
             @PathVariable UUID eventId) {
 
-        return paymentService.initiateEventPayment(eventId)
-                .map(ResponseEntity::ok);
+        return ResponseEntity.ok(paymentService.initiateEventPayment(eventId));
     }
 
     @GetMapping("/verify/{reference}")
-    public Mono<ResponseEntity<PaymentDto.VerifyPaymentResponse>> verifyPayment(
+    public ResponseEntity<PaymentDto.VerifyPaymentResponse> verifyPayment(
             @PathVariable String reference) {
 
-        return paymentService.verifyPayment(reference)
-                .map(ResponseEntity::ok);
+        return ResponseEntity.ok(paymentService.verifyPayment(reference));
     }
 }

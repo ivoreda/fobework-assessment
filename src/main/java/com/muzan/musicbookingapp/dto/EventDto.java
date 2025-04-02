@@ -45,6 +45,7 @@ public class EventDto {
         @Min(value = 0, message = "Ticket price cannot be negative")
         private Double ticketPrice;
 
+        @Builder.Default
         private Boolean isPublished = false;
     }
 

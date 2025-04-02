@@ -10,7 +10,7 @@ import java.util.UUID;
 @Service
 public class MockPaystackService {
 
-    public Mono<PaymentDto.InitiatePaymentResponse> initiateTransaction(PaymentDto.InitiatePaymentRequest request) {
+    public PaymentDto.InitiatePaymentResponse initiateTransaction(PaymentDto.InitiatePaymentRequest request) {
         PaymentDto.InitiatePaymentResponse response = new PaymentDto.InitiatePaymentResponse(
                 true,
                 "Mock payment initiated successfully",
@@ -18,10 +18,10 @@ public class MockPaystackService {
                 request.getReference()
         );
 
-        return Mono.just(response);
+        return response;
     }
 
-    public Mono<PaymentDto.VerifyPaymentResponse> verifyTransaction(String reference) {
+    public PaymentDto.VerifyPaymentResponse verifyTransaction(String reference) {
         PaymentDto.VerifyPaymentResponse response = new PaymentDto.VerifyPaymentResponse(
                 true,
                 "Mock verification successful",
@@ -30,6 +30,6 @@ public class MockPaystackService {
                 1000.00
         );
 
-        return Mono.just(response);
+        return response;
     }
 }

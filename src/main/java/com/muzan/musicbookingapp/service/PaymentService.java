@@ -31,7 +31,7 @@ public class PaymentService {
     @Value("${app.payment.callback-url}")
     private String callbackUrl;
 
-    public Mono<PaymentDto.InitiatePaymentResponse> initiateEventPayment(UUID eventId) {
+    public PaymentDto.InitiatePaymentResponse initiateEventPayment(UUID eventId) {
         User currentUser = userService.getCurrentUser();
 
         Event event = eventRepository.findById(eventId)
@@ -64,20 +64,18 @@ public class PaymentService {
         return mockPaystackService.initiateTransaction(request);
     }
 
-    public Mono<PaymentDto.VerifyPaymentResponse> verifyPayment(String reference) {
-        return mockPaystackService.verifyTransaction(reference)
-                .doOnSuccess(response -> {
-                    Payment payment = paymentRepository.findByReference(reference)
-                            .orElseThrow(() -> new RuntimeException("Payment not found"));
+    public PaymentDto.VerifyPaymentResponse verifyPayment(String reference) {
+        Payment payment = paymentRepository.findByReference(reference)
+                .orElseThrow(() -> new RuntimeException("Payment not found"));
 
-                    payment.setStatus(PaymentStatus.APPROVED);
-                    payment.setPaidAt(LocalDateTime.now());
-                    paymentRepository.save(payment);
+        payment.setStatus(PaymentStatus.APPROVED);
+        payment.setPaidAt(LocalDateTime.now());
+        paymentRepository.save(payment);
 
-                    // Reduce available tickets
-                    Event event = payment.getEvent();
-                    event.setTicketsAvailable(event.getTicketsAvailable() - 1);
-                    eventRepository.save(event);
-                });
+        Event event = payment.getEvent();
+        event.setTicketsAvailable(event.getTicketsAvailable() - 1);
+        eventRepository.save(event);
+
+        return mockPaystackService.verifyTransaction(reference);
     }
 }
